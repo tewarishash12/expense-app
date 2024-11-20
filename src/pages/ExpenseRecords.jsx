@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { TrashIcon, PencilIcon } from '@heroicons/react/outline'; // Importing Trash and Pencil Icons
 import Navbar from '../components/Navbar';
+import { ToastContainer, toast } from 'react-toastify'; // Import Toastify components
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for Toastify
 
 const ExpenseRecords = () => {
   const [expenses, setExpenses] = useState([]);
@@ -24,6 +26,7 @@ const ExpenseRecords = () => {
     setExpenses(updatedExpenses);
     // Update localStorage after deleting an expense
     localStorage.setItem("expenses", JSON.stringify(updatedExpenses));
+    toast.success('Expense deleted successfully!'); // Show toast notification on delete
   };
 
   // Function to start editing an expense
@@ -57,6 +60,7 @@ const ExpenseRecords = () => {
     // Update localStorage after updating an expense
     localStorage.setItem("expenses", JSON.stringify(updatedExpenses));
     setEditingExpense(null); // Exit editing mode
+    toast.success('Expense updated successfully!'); // Show toast notification on update
   };
 
   return (
@@ -202,6 +206,9 @@ const ExpenseRecords = () => {
         <div className="absolute bottom-10 left-5 text-blue-300 text-3xl">🐟</div>
         <div className="absolute bottom-16 right-8 text-blue-300 text-2xl">🐠</div>
       </div>
+
+      {/* Toast Notifications Container */}
+      <ToastContainer />
     </>
   );
 };
