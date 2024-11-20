@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 
 const Form = () => {
-    const [expense, setExpense] = useState("")
-    const [category, setCategory] = useState("")
-    const [cost, setCost] = useState("")
-    const [date, setDate] = useState("")
+    const [expense, setExpense] = useState("");
+    const [category, setCategory] = useState("");
+    const [cost, setCost] = useState("");
+    const [date, setDate] = useState("");
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log('Form submitted');
-
         const expenseData = {
+            id: Date.now(),
             expense,
             category,
             cost: Number(cost),
             date
-        }
+        };
 
         let storedData = JSON.parse(localStorage.getItem("expenses") || "[]");
         storedData.push(expenseData);
@@ -28,18 +27,28 @@ const Form = () => {
     };
 
     return (
-        <div className="container h-screen flex flex-col align-center justify-center">
+        <div
+            className="h-screen flex flex-col justify-center items-center bg-gradient-to-b from-blue-200 to-blue-400 relative"
+            style={{
+                clipPath: "polygon(0 0, 100% 0, 100% 90%, 0 100%)",
+                overflow: "hidden"
+            }}
+        >
+            {/* Waves */}
+            <div className="absolute top-0 left-0 w-full h-20 bg-white" style={{ clipPath: "polygon(0 50%, 25% 75%, 50% 50%, 75% 75%, 100% 50%, 100% 100%, 0 100%)" }}></div>
+
+            {/* Form */}
             <form
                 onSubmit={onSubmit}
-                className="h-full w-full flex flex-col justify-center items-center p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md max-w-lg mx-auto"
+                className="p-8 bg-white rounded-lg shadow-lg w-11/12 max-w-md relative"
             >
-                <h1 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-gray-200">
-                    Enter your Expenses:
+                <h1 className="text-3xl font-bold text-orange-500 text-center mb-6">
+                    Enter your Expenses
                 </h1>
 
                 {/* Expense Title */}
-                <div className="mb-4 w-full">
-                    <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
+                <div className="mb-4">
+                    <label className="block text-gray-600 font-medium mb-2">
                         Expense Title:
                     </label>
                     <input
@@ -49,22 +58,22 @@ const Form = () => {
                         value={expense}
                         onChange={(e) => setExpense(e.target.value)}
                         required
-                        className="w-full px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
 
                 {/* Expense Category */}
-                <div className="mb-4 w-full">
-                    <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
+                <div className="mb-4">
+                    <label className="block text-gray-600 font-medium mb-2">
                         Category of Expense:
                     </label>
                     <select
                         required
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                        className="w-full px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="" selected disabled hidden>
+                        <option value="" disabled hidden>
                             Choose category of Expense
                         </option>
                         <option value="Grocery">Grocery</option>
@@ -76,9 +85,9 @@ const Form = () => {
                 </div>
 
                 {/* Expense Price */}
-                <div className="mb-4 w-full">
-                    <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
-                        Expense Price:
+                <div className="mb-4">
+                    <label className="block text-gray-600 font-medium mb-2">
+                        Cost:
                     </label>
                     <input
                         type="number"
@@ -87,13 +96,13 @@ const Form = () => {
                         value={cost}
                         onChange={(e) => setCost(e.target.value)}
                         required
-                        className="w-full px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
 
                 {/* Expense Date */}
-                <div className="mb-6 w-full">
-                    <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2">
+                <div className="mb-6">
+                    <label className="block text-gray-600 font-medium mb-2">
                         Expense Date:
                     </label>
                     <input
@@ -102,18 +111,22 @@ const Form = () => {
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
                         required
-                        className="w-full px-4 py-2 border rounded-lg text-gray-800 dark:text-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
 
                 {/* Submit Button */}
                 <button
                     type="submit"
-                    className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-bold py-2 rounded-lg hover:from-orange-500 hover:to-yellow-500 shadow-lg"
                 >
                     Submit
                 </button>
             </form>
+
+            {/* Fish Decorations */}
+            <div className="absolute bottom-10 left-5 text-blue-300 text-3xl">🐟</div>
+            <div className="absolute bottom-16 right-8 text-blue-300 text-2xl">🐠</div>
         </div>
     );
 };
