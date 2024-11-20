@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const Form = () => {
     const [expense, setExpense] = useState("")
     const [category, setCategory] = useState("")
     const [cost, setCost] = useState("")
     const [date, setDate] = useState("")
-    const [expensesList, setExpensesList] = useState([]);
-
-    // Fetch expenses from localStorage when the component is mounted
-    useEffect(() => {
-        const storedData = JSON.parse(localStorage.getItem("expenses") || "[]");
-        setExpensesList(storedData);
-    }, []);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -28,10 +21,6 @@ const Form = () => {
         storedData.push(expenseData);
         localStorage.setItem("expenses", JSON.stringify(storedData));
 
-        // Update the local state to trigger re-render
-        setExpensesList(storedData);
-
-        // Clear form fields
         setExpense("");
         setCategory("");
         setCost("");
@@ -39,10 +28,10 @@ const Form = () => {
     };
 
     return (
-        <div className="container">
+        <div className="container h-screen flex flex-col align-center justify-center">
             <form
                 onSubmit={onSubmit}
-                className="h-full w-full flex flex-col items-center p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md max-w-lg mx-auto"
+                className="h-full w-full flex flex-col justify-center items-center p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md max-w-lg mx-auto"
             >
                 <h1 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-gray-200">
                     Enter your Expenses:
@@ -125,26 +114,6 @@ const Form = () => {
                     Submit
                 </button>
             </form>
-
-            {/* Display List of Expenses */}
-            <div className="mt-8 w-full max-w-lg mx-auto">
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-700">
-                    List of Expenses:
-                </h2>
-                <ul className="mt-4 space-y-4">
-                    {expensesList.map((expense, index) => (
-                        <li
-                            key={index}
-                            className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-sm"
-                        >
-                            <p className="text-gray-800 dark:text-gray-200 font-semibold">{expense.expense}</p>
-                            <p className="text-gray-600 dark:text-gray-400">Category: {expense.category}</p>
-                            <p className="text-gray-600 dark:text-gray-400">Cost: ₹{expense.cost}</p>
-                            <p className="text-gray-600 dark:text-gray-400">Date: {expense.date}</p>
-                        </li>
-                    ))}
-                </ul>
-            </div>
         </div>
     );
 };
