@@ -1,13 +1,62 @@
 import React, { useEffect, useState } from 'react';
+import { TrashIcon, PencilIcon } from '@heroicons/react/outline'; // Importing Trash and Pencil Icons
 
 const ExpenseRecords = () => {
     const [expenses, setExpenses] = useState([]);
+    const [editingExpense, setEditingExpense] = useState(null); // State to manage which expense is being edited
+    const [updatedExpense, setUpdatedExpense] = useState({
+        expense: '',
+        category: '',
+        cost: '',
+        date: ''
+    }); // State to store updated expense details
 
     useEffect(() => {
         // Retrieve data from localStorage when the component mounts
         const storedData = JSON.parse(localStorage.getItem("expenses") || "[]");
         setExpenses(storedData);
     }, []);
+
+    // Function to delete an expense by id
+    const deleteExpense = (id) => {
+        const updatedExpenses = expenses.filter((expense) => expense.id !== id);
+        setExpenses(updatedExpenses);
+        // Update localStorage after deleting an expense
+        localStorage.setItem("expenses", JSON.stringify(updatedExpenses));
+    };
+
+    // Function to start editing an expense
+    const startEditing = (expense) => {
+        setEditingExpense(expense.id);
+        setUpdatedExpense({
+            expense: expense.expense,
+            category: expense.category,
+            cost: expense.cost,
+            date: expense.date
+        });
+    };
+
+    // Function to handle input change while updating
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUpdatedExpense({
+            ...updatedExpense,
+            [name]: value
+        });
+    };
+
+    // Function to update an expense
+    const updateExpense = (id) => {
+        const updatedExpenses = expenses.map((expense) =>
+            expense.id === id
+                ? { ...expense, ...updatedExpense } // Update the expense with new data
+                : expense
+        );
+        setExpenses(updatedExpenses);
+        // Update localStorage after updating an expense
+        localStorage.setItem("expenses", JSON.stringify(updatedExpenses));
+        setEditingExpense(null); // Exit editing mode
+    };
 
     return (
         <div
@@ -31,6 +80,60 @@ const ExpenseRecords = () => {
                 Expense Records
             </h1>
 
+            {/* Edit Form (only show when editing) */}
+            {editingExpense && (
+                <div className="w-11/12 max-w-4xl bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <h2 className="text-2xl font-semibold text-orange-700 mb-4">
+                        Edit Expense
+                    </h2>
+                    <div className="space-y-4">
+                        <input
+                            type="text"
+                            name="expense"
+                            value={updatedExpense.expense}
+                            onChange={handleChange}
+                            className="w-full p-2 border rounded"
+                            placeholder="Expense Title"
+                        />
+                        <input
+                            type="text"
+                            name="category"
+                            value={updatedExpense.category}
+                            onChange={handleChange}
+                            className="w-full p-2 border rounded"
+                            placeholder="Category"
+                        />
+                        <input
+                            type="number"
+                            name="cost"
+                            value={updatedExpense.cost}
+                            onChange={handleChange}
+                            className="w-full p-2 border rounded"
+                            placeholder="Cost"
+                        />
+                        <input
+                            type="date"
+                            name="date"
+                            value={updatedExpense.date}
+                            onChange={handleChange}
+                            className="w-full p-2 border rounded"
+                        />
+                        <button
+                            onClick={() => updateExpense(editingExpense)}
+                            className="w-full bg-orange-500 text-white p-2 rounded"
+                        >
+                            Save Changes
+                        </button>
+                        <button
+                            onClick={() => setEditingExpense(null)}
+                            className="w-full mt-2 bg-gray-300 text-black p-2 rounded"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
+
             {/* Table */}
             {expenses.length > 0 ? (
                 <div className="w-11/12 max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
@@ -41,6 +144,7 @@ const ExpenseRecords = () => {
                                 <th className="py-3 px-4 text-left font-medium">Category</th>
                                 <th className="py-3 px-4 text-left font-medium">Cost</th>
                                 <th className="py-3 px-4 text-left font-medium">Date</th>
+                                <th className="py-3 px-4 text-left font-medium">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,6 +168,22 @@ const ExpenseRecords = () => {
                                     </td>
                                     <td className="py-3 px-4 text-gray-900 dark:text-gray-100">
                                         {date}
+                                    </td>
+                                    <td className="py-3 px-4 text-gray-900 dark:text-gray-100">
+                                        {/* Edit Icon */}
+                                        <button
+                                            onClick={() => startEditing({ id, expense, category, cost, date })}
+                                            className="text-blue-500 hover:text-blue-700 transition-colors"
+                                        >
+                                            <PencilIcon className="w-6 h-6" />
+                                        </button>
+                                        {/* Trash Icon */}
+                                        <button
+                                            onClick={() => deleteExpense(id)} // Delete the expense on click
+                                            className="ml-4 text-red-500 hover:text-red-700 transition-colors"
+                                        >
+                                            <TrashIcon className="w-6 h-6" />
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
