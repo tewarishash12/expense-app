@@ -63,6 +63,18 @@ const ExpenseRecords = () => {
     toast.success('Expense updated successfully!'); // Show toast notification on update
   };
 
+  // Function to format the cost with no sign
+  const formatCost = (cost) => {
+    return Math.abs(cost).toFixed(2); // Convert to absolute value and display to 2 decimal places
+  };
+
+  // Function to determine the background color for the cost
+  const getCostBackgroundColor = (cost) => {
+    return cost >= 0
+      ? 'bg-gradient-to-r from-darkgreen to-lightgreen' // Positive cost
+      : 'bg-gradient-to-r from-darkred to-lightred'; // Negative cost
+  };
+
   return (
     <>
       <Navbar />
@@ -169,8 +181,10 @@ const ExpenseRecords = () => {
                     <td className="py-3 px-4 text-gray-900 dark:text-gray-100">
                       {category}
                     </td>
-                    <td className="py-3 px-4 text-gray-900 dark:text-gray-100">
-                      ₹{cost}
+                    <td
+                      className={`py-3 px-4 text-gray-900 dark:text-gray-100 ${getCostBackgroundColor(cost)}`}
+                    >
+                      ₹{formatCost(cost)}
                     </td>
                     <td className="py-3 px-4 text-gray-900 dark:text-gray-100">
                       {date}
@@ -204,10 +218,9 @@ const ExpenseRecords = () => {
 
         {/* Fish Decorations */}
         <div className="absolute bottom-10 left-5 text-blue-300 text-3xl">🐟</div>
-        <div className="absolute bottom-16 right-8 text-blue-300 text-2xl">🐠</div>
+        <div className="absolute bottom-10 right-5 text-blue-300 text-3xl">🐟</div>
+        <div className="absolute top-24 right-12 text-blue-200 text-2xl">🐟</div>
       </div>
-
-      {/* Toast Notifications Container */}
       <ToastContainer />
     </>
   );
