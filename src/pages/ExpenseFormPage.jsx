@@ -3,13 +3,13 @@ import ExpenseForm from '../components/ExpenseForm'
 
 const ExpenseFormPage = () => {
 
-    const expenseData = localStorage.getItem('expense_record') || '[]';
+    const expenseData = localStorage.getItem('expenses') || '[]';
     const expenses = JSON.parse(expenseData);
 
     const handleExpenseSave = (expense) =>{
         expenses.push(expense);
         const updatedString = JSON.stringify(expenses);
-        localStorage.setItem("expense_record", updatedString);
+        localStorage.setItem("expenses", updatedString);
     }
 
     return (

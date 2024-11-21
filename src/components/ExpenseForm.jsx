@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Category, Cost, Date, Expense } from './Input';
 
 const ExpenseForm = ({ onSaveExpense }) => {
+    const [idx, setIdx] = useState(0)
     const [expense, setExpense] = useState("");
     const [category, setCategory] = useState("");
     const [cost, setCost] = useState("");
@@ -10,8 +11,8 @@ const ExpenseForm = ({ onSaveExpense }) => {
     const handleSubmit = (e) =>{
         e.preventDefault();
         console.log("Submitted")
-
-        onSaveExpense({ expense:expense, category:category, cost:cost, date:date  })
+        setIdx(idx+1);
+        onSaveExpense({ id:idx,  expense:expense, category:category, cost:cost, date:date  })
     }
 
     return (
