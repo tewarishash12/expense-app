@@ -1,36 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ExpenseList from '../components/ExpenseList';
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-// We are creating a useState here so that we can update the page data without reloading the page and the latest information can be displayed
+const ExpenseListPage = ({ setIdx, setExpense, setCategory, setCost, setDate }) => {
+    const navigate = useNavigate();
 
-function useForceUpdation(){
-    const [value,setValue] = useState(0);
-    return () => setValue(value => value+1);
-}
+    const [expenses, setExpenses] = useState(() => {
+        const expenseString = localStorage.getItem("expenses");
+        return expenseString ? JSON.parse(expenseString) : [];
+    })
 
-const ExpenseListPage = () => {
-    const forceUpdate = useForceUpdation();
-    //custom hook for updating the element without reloading the page
+    const handleDeleteExpense = (idx) => {
+        const updation = expenses.filter((_, i) => { return i !== idx; })
+        setExpenses(updation);
+        localStorage.setItem("expenses", JSON.stringify(updation));
+    }
 
-    const expenseString = localStorage.getItem("expenses");
-    const expenses = JSON.parse(expenseString);
-
-    const handleDeleteExpense = (idx) =>{
-        const updation = expenses.filter((expense, idnx) =>{
-            return expense.id !== idx;
-        })
-
-        const updatedString = JSON.stringify(updation);
-        localStorage.setItem("expenses", updatedString);
-        forceUpdate();
+    const handleUpdateExpense = (idx) => {
+        const expense = expenses[idx];
+        setIdx(idx);
+        setExpense(expense.expense)
+        setCategory(expense.category)
+        setCost(expense.cost)
+        setDate(expense.date)
+        navigate('/addexpense', { state: { expense, idx } });
     }
 
     return (
-        <>
-            <h1>ExpenseList</h1>
-            <ExpenseList expenses={expenses} handleDeleteExpense={handleDeleteExpense} />
-        </>
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div className="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full">
+                <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">
+                    Expense List
+                </h1>
+                <ExpenseList expenses={expenses} handleDeleteExpense={handleDeleteExpense} handleUpdateExpense={handleUpdateExpense} />
+            </div>
+        </div>
     )
 }
 
