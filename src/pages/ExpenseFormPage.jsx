@@ -2,10 +2,10 @@ import React from 'react'
 import ExpenseForm from '../components/ExpenseForm'
 
 const ExpenseFormPage = ({ idx, setIdx, expense, setExpense, category, setCategory, cost, setCost, date, setDate }) => {
-    const expenseData = localStorage.getItem('expenses') || '[]';
-    const expenses = JSON.parse(expenseData);
-
+    
     const handleExpenseSave = (updateExpense, idx) => {
+        const expenseData = localStorage.getItem('expenses') || '[]';
+        const expenses = JSON.parse(expenseData);
         if (idx !== undefined) {
             expenses[idx] = updateExpense;
         }

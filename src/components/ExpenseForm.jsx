@@ -5,8 +5,16 @@ const ExpenseForm = ({ onSaveExpense, idx, setIdx, expense, setExpense, category
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setIdx(idx + 1);
-        onSaveExpense({ id: idx, expense: expense, category: category, cost: cost, date: date })
+        onSaveExpense({ id: idx, expense, category, cost, date }, idx)
+        if(idx===undefined){
+            setIdx(idx + 1);
+            onSaveExpense({ id: idx, expense: expense, category: category, cost: cost, date: date })
+        }
+        setIdx(idx+1);
+        setExpense('');
+        setDate('');
+        setCost('');
+        setCategory('');
     }
 
     return (

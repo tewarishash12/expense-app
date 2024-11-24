@@ -23,7 +23,7 @@ const ExpenseListPage = ({ setIdx, setExpense, setCategory, setCost, setDate }) 
         setCategory(expense.category)
         setCost(expense.cost)
         setDate(expense.date)
-        navigate('/addexpense', { state: { expense, idx } });
+        navigate('/addexpense');
     }
 
     return (
