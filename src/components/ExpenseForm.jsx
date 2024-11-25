@@ -1,20 +1,24 @@
 import React from 'react'
 import { Category, Cost, Date, Expense } from './Input';
+import { useNavigate } from 'react-router-dom';
 
 const ExpenseForm = ({ onSaveExpense, idx, setIdx, expense, setExpense, category, setCategory, cost, setCost, date, setDate }) => {
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSaveExpense({ id: idx, expense, category, cost, date }, idx)
         if(idx===undefined){
             setIdx(idx + 1);
-            onSaveExpense({ id: idx, expense: expense, category: category, cost: cost, date: date })
+            onSaveExpense({ id: idx, expense: expense, category: category, cost: cost, date: date });
+        } else {
+            onSaveExpense({ expense, category, cost, date }, idx)
         }
         setIdx(idx+1);
         setExpense('');
         setDate('');
         setCost('');
         setCategory('');
+        navigate('/history');
     }
 
     return (

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import ExpenseList from '../components/ExpenseList';
 import { useNavigate } from 'react-router-dom';
+import Navbar from "../components/Navbar"
 
 const ExpenseListPage = ({ setIdx, setExpense, setCategory, setCost, setDate }) => {
     const navigate = useNavigate();
@@ -27,14 +28,17 @@ const ExpenseListPage = ({ setIdx, setExpense, setCategory, setCost, setDate }) 
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full">
-                <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">
-                    Expense List
-                </h1>
-                <ExpenseList expenses={expenses} handleDeleteExpense={handleDeleteExpense} handleUpdateExpense={handleUpdateExpense} />
+        <>
+            <Navbar />
+            <div className="flex items-center justify-center min-h-screen bg-gray-100">
+                <div className="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full">
+                    <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">
+                        Expense List
+                    </h1>
+                    <ExpenseList expenses={expenses} handleDeleteExpense={handleDeleteExpense} handleUpdateExpense={handleUpdateExpense} />
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 
