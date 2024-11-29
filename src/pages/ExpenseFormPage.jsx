@@ -1,21 +1,24 @@
 import React from 'react'
 import ExpenseForm from '../components/ExpenseForm'
 import Navbar from "../components/Navbar"
+import { useCallForm } from '../context/FormContext'
 
-const ExpenseFormPage = ({ idx, setIdx, expense, setExpense, category, setCategory, cost, setCost, date, setDate }) => {
+const ExpenseFormPage = () => {
+    const {idx} = useCallForm();
 
-    const handleExpenseSave = (updateExpense, idx) => {
-        const expenseData = localStorage.getItem('expenses') || '[]';
-        const expenses = JSON.parse(expenseData);
-        if (idx !== undefined) {
-            expenses[idx] = updateExpense;
+    const handleExpenseSave = (newExpense) => {
+        const expenses = JSON.parse(localStorage.getItem('expenses') || '[]');
+    
+        if (idx !== undefined && idx < expenses.length) {
+            expenses[idx] = { id: idx, ...newExpense };
+        } else {
+            expenses.push({ id: expenses.length, ...newExpense });
         }
-        else {
-            expenses.push(updateExpense);
-        }
-        const updatedString = JSON.stringify(expenses);
-        localStorage.setItem("expenses", updatedString);
-    }
+        localStorage.setItem('expenses', JSON.stringify(expenses));
+    };
+    
+    
+    
 
     return (
         <>
@@ -25,13 +28,7 @@ const ExpenseFormPage = ({ idx, setIdx, expense, setExpense, category, setCatego
                     <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">
                         Expense Tracker
                     </h1>
-                    <ExpenseForm onSaveExpense={handleExpenseSave}
-                        idx={idx} setIdx={setIdx}
-                        expense={expense} setExpense={setExpense}
-                        category={category} setCategory={setCategory}
-                        cost={cost} setCost={setCost}
-                        date={date} setDate={setDate}
-                    />
+                    <ExpenseForm onSaveExpense={handleExpenseSave} />
                 </div>
             </div>
         </>

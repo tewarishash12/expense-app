@@ -2,14 +2,18 @@ import React, { useState } from 'react'
 import ExpenseList from '../components/ExpenseList';
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../components/Navbar"
+import { useCallForm } from '../context/FormContext';
 
-const ExpenseListPage = ({ setIdx, setExpense, setCategory, setCost, setDate }) => {
+const ExpenseListPage = () => {
     const navigate = useNavigate();
 
     const [expenses, setExpenses] = useState(() => {
         const expenseString = localStorage.getItem("expenses");
-        return expenseString ? JSON.parse(expenseString) : [];
+        return (expenseString ? JSON.parse(expenseString) : []);
     })
+    console.log("ExpenseListPage", expenses)
+    const {setIdx, setExpense, setCategory, setCost, setDate} = useCallForm();
+    // console.log(setExpense);
 
     const handleDeleteExpense = (idx) => {
         const updation = expenses.filter((_, i) => { return i !== idx; })

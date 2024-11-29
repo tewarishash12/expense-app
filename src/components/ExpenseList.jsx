@@ -1,12 +1,12 @@
 import React from 'react'
 
 const ExpenseList = ({ expenses, handleDeleteExpense, handleUpdateExpense }) => {
+    console.log("ExpenseList",expenses)
 
     return (
         <ul className="space-y-4">
             {expenses.map((expense, idx) => (
                 <li
-                    key={idx}
                     className="bg-gray-50 p-4 rounded-lg shadow flex justify-between items-center"
                 >
                     <div className="text-gray-800">

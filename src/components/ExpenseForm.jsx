@@ -1,25 +1,34 @@
 import React from 'react'
 import { Category, Cost, Date, Expense } from './Input';
 import { useNavigate } from 'react-router-dom';
+import { useCallForm } from '../context/FormContext';
 
-const ExpenseForm = ({ onSaveExpense, idx, setIdx, expense, setExpense, category, setCategory, cost, setCost, date, setDate }) => {
+const ExpenseForm = ({ onSaveExpense }) => {
     const navigate = useNavigate();
-
+    const {idx, setIdx, expense, setExpense, category, setCategory, cost, setCost, date, setDate} = useCallForm();
+    
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(idx===undefined){
-            setIdx(idx + 1);
-            onSaveExpense({ id: idx, expense: expense, category: category, cost: cost, date: date });
-        } else {
-            onSaveExpense({ expense, category, cost, date }, idx)
-        }
-        setIdx(idx+1);
+    
+        const newExpense = {
+            id: idx,
+            expense,
+            category,
+            cost,
+            date
+        };
+    
+        onSaveExpense(newExpense);
+        setIdx(idx + 1); 
+    
         setExpense('');
-        setDate('');
-        setCost('');
         setCategory('');
-        navigate('/history');
-    }
+        setCost('');
+        setDate('');
+    
+        navigate('/history'); // Navigate after saving
+    };
+    
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
