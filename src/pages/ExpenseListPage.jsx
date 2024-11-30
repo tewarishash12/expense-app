@@ -1,35 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ExpenseList from '../components/ExpenseList';
-import { useNavigate } from 'react-router-dom';
 import Navbar from "../components/Navbar"
-import { useCallForm } from '../context/FormContext';
 
 const ExpenseListPage = () => {
-    const navigate = useNavigate();
-
-    const [expenses, setExpenses] = useState(() => {
-        const expenseString = localStorage.getItem("expenses");
-        return (expenseString ? JSON.parse(expenseString) : []);
-    })
-    console.log("ExpenseListPage", expenses)
-    const {setIdx, setExpense, setCategory, setCost, setDate} = useCallForm();
-    // console.log(setExpense);
-
-    const handleDeleteExpense = (idx) => {
-        const updation = expenses.filter((_, i) => { return i !== idx; })
-        setExpenses(updation);
-        localStorage.setItem("expenses", JSON.stringify(updation));
-    }
-
-    const handleUpdateExpense = (idx) => {
-        const expense = expenses[idx];
-        setIdx(idx);
-        setExpense(expense.expense)
-        setCategory(expense.category)
-        setCost(expense.cost)
-        setDate(expense.date)
-        navigate('/addexpense');
-    }
 
     return (
         <>
@@ -39,7 +12,7 @@ const ExpenseListPage = () => {
                     <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">
                         Expense List
                     </h1>
-                    <ExpenseList expenses={expenses} handleDeleteExpense={handleDeleteExpense} handleUpdateExpense={handleUpdateExpense} />
+                    <ExpenseList />
                 </div>
             </div>
         </>

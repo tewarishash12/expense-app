@@ -1,7 +1,8 @@
 import React from 'react'
+import { useCallForm } from '../context/FormContext'
 
-const ExpenseList = ({ expenses, handleDeleteExpense, handleUpdateExpense }) => {
-    console.log("ExpenseList",expenses)
+const ExpenseList = () => {
+    const {expenses, handleDeleteExpense, handleUpdateExpense} = useCallForm();
 
     return (
         <ul className="space-y-4">

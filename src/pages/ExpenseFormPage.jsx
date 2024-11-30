@@ -4,21 +4,7 @@ import Navbar from "../components/Navbar"
 import { useCallForm } from '../context/FormContext'
 
 const ExpenseFormPage = () => {
-    const {idx} = useCallForm();
-
-    const handleExpenseSave = (newExpense) => {
-        const expenses = JSON.parse(localStorage.getItem('expenses') || '[]');
-    
-        if (idx !== undefined && idx < expenses.length) {
-            expenses[idx] = { id: idx, ...newExpense };
-        } else {
-            expenses.push({ id: expenses.length, ...newExpense });
-        }
-        localStorage.setItem('expenses', JSON.stringify(expenses));
-    };
-    
-    
-    
+    const {handleExpenseSave} = useCallForm();    
 
     return (
         <>
